@@ -12,7 +12,7 @@
         </thead>
         <tbody>
             <?php
-                require 'koneksi.php';
+                require_once $_SERVER['DOCUMENT_ROOT'] . '/akademik/koneksi.php';
                 $tampil = $koneksi->query("SELECT * FROM mahasiswa");
                 $no = 1;
                 while ($data = mysqli_fetch_assoc($tampil)){
@@ -25,7 +25,8 @@
                         <td><?= $data['alamat'] ?> </td>
                         <td>
                                 <a href="index.php?id=<?= $data['id'] ?>&p=edit" class="btn btn-warning btn-sm">Edit</a>
-                                <a onclick="return confirm('Apakah anda yakin untuk hapus?')" href="proses.php?id=<?= $data['id'] ?>&aksi=hapus" class="btn btn-danger btn-sm">Hapus</a>
+                                <a href="mahasiswa/proses.php?id=<?= $data['id'] ?>&aksi=hapus"
+                                onclick="return confirm('Yakin?')" class="btn btn-danger btn-sm">Hapus</a>
                         </td>
                     </tr>
             <?php } ?>

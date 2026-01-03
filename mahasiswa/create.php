@@ -11,7 +11,7 @@
 
     <div class="container">
         <h1>Input Data</h1>
-            <form action="proses.php" method="post">
+            <form action="mahasiswa/proses.php" method="post">
                 <div class="mb-3">
                     <label for="nim" class="form-label">NIM</label>
                     <input type="text" class="form-control" id="nim" name="nim" required>
@@ -31,7 +31,7 @@
 
                 <div>
                 <input type="submit" name="submit" value="Submit" class="btn btn-warning">
-                <a href="index.php" class="btn btn-secondary">List Data Mahasiswa</a>
+                <a href="/akademik/index.php?p=list" class="btn btn-secondary">List Data Mahasiswa</a>
             </div>
         </form>
     </div>    

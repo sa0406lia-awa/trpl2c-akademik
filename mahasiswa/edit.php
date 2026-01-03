@@ -1,6 +1,6 @@
 <h1>Edit Data</h1>
 <?php
-    require 'koneksi.php';
+    require_once __DIR__ . '/../koneksi.php';
 
     if (!isset($_GET['id'])){
         echo "ID tidak ditemukan!";
@@ -18,7 +18,7 @@
 
     $data = $result->fetch_assoc();
 ?>
-    <form action="proses.php" method="post">
+    <form action="mahasiswa/proses.php" method="post">
 
         <input type="hidden" name="id" value="<?=  $data['id'] ?>">
 
@@ -36,7 +36,7 @@
 
         <div class="mb-3">
             <label class="form-label">Tanggal Lahir</label>
-            <input type="data" class="form-control" name="tgl_lahir"
+            <input type="date" class="form-control" name="tgl_lahir"
             value="<?= $data['tgl_lahir'] ?>" required>
         </div>
 
@@ -46,6 +46,5 @@
         </div>
 
         <button href="index.php" type="submit" name="update" class="btn btn-primary">Update</button>
-        <a href="index.php" class="btn btn-secondary">Kembali</a>
-
+        <a href="/akademik/index.php?p=list" class="btn btn-secondary">Kembali</a>
     </form>

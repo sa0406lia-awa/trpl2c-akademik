@@ -1,5 +1,5 @@
 <?php
-    require 'koneksi.php';
+    require_once '../koneksi.php';
 
     //INSERT
     if(isset($_POST['submit'])){
@@ -13,7 +13,7 @@
         $query = $koneksi->query($sql);
 
         if($query){
-            header('Location: index.php');
+            header('Location: /akademik/index.php');
             exit;
         }else{
             echo "Gagal Menyimpan Data";
@@ -34,7 +34,7 @@
 
         if ($query){
            // echo "Berhasil Menyimpan Data"; 
-           header("Location: index.php");
+           header("Location: /akademik/index.php");
            exit;
         }else{
             echo "Gagal Mengubah Data";
@@ -42,12 +42,12 @@
     }
 
     //DELETE
-    if(isset($_GET['aksi']) == 'hapus'){
+    if(isset($_GET['aksi']) && $_GET['aksi'] == 'hapus'){
         $id = $_GET['id'];
         $query = $koneksi->query("DELETE FROM mahasiswa WHERE id='$id'");
 
         if($query){
-            header("Location: index.php");
+            header("Location: /akademik/index.php");
             exit;
         }else{
             echo "Gagal Menghapus Data";
