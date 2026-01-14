@@ -1,63 +1,33 @@
 <?php
 session_start();
-require 'koneksi.php'; 
+require 'koneksi.php';
 
 $error = '';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $email = $_POST['email'];
-    $pass  = $_POST['password']; // TANPA md5
 
-    $ceklogin = $koneksi->query(
-        "SELECT * FROM pengguna 
-         WHERE email='$email' AND password='$pass'"
+    $email = $_POST['email'];
+    $pass  = $_POST['password'];
+
+    $result = $koneksi->query(
+        "SELECT * FROM pengguna WHERE email='$email'"
     );
 
-    if ($ceklogin && $ceklogin->num_rows == 1) {
-        $data = $ceklogin->fetch_assoc();
+    if ($result && $result->num_rows == 1) {
+        $data = $result->fetch_assoc();
 
-        $_SESSION['login'] = TRUE;
-        $_SESSION['email'] = $data['email'];
-        $_SESSION['nama']  = $data['nama_lengkap']; // opsional
+        if (password_verify($pass, $data['password'])) {
+            $_SESSION['login'] = true;
+            $_SESSION['email'] = $data['email'];
+            $_SESSION['nama']  = $data['nama_lengkap'];
 
-        header('Location: index.php');
-        exit;
+            header("Location: index.php");
+            exit;
+        } else {
+            $error = "Password salah";
+        }
     } else {
-        $error = "Login gagal. Email atau password salah.";
+        $error = "Email tidak ditemukan";
     }
 }
 ?>
-
-<!doctype html>
-<html lang="en">
-
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Login Form</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-
-<body>
-    <div class="container mt-5">
-        <div class="row">
-            <div class="col-lg-6">
-                <h1>Login Form</h1>
-                <form action="" method="post">
-                    <div class="mb-3">
-                        <label for="exampleInputEmail1" class="form-label">Email address</label>
-                        <input type="email" class="form-control" id="exampleInputEmail1" name="email" required>
-                        <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="exampleInputPassword1" class="form-label">Password</label>
-                        <input type="password" class="form-control" id="exampleInputPassword1" name="password" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Login</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</body>
-
-</html>

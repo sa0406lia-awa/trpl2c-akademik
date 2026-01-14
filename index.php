@@ -1,11 +1,38 @@
 <?php
 session_start();
+require 'koneksi.php';
 
-if (!isset($_SESSION['login']) || $_SESSION['login'] !== TRUE) {
-  header("Location: login.php");
-  exit;
+$error = '';
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+    $email = $_POST['email'];
+    $pass  = $_POST['password'];
+
+    $result = $koneksi->query(
+        "SELECT * FROM pengguna WHERE email='$email'"
+    );
+
+    if ($result && $result->num_rows == 1) {
+        $data = $result->fetch_assoc();
+
+        if (password_verify($pass, $data['password'])) {
+            $_SESSION['login'] = true;
+            $_SESSION['email'] = $data['email'];
+            $_SESSION['nama']  = $data['nama_lengkap'];
+
+            header("Location: index.php");
+            exit;
+        } else {
+            $error = "Password salah";
+        }
+    } else {
+        $error = "Email tidak ditemukan";
+    }
 }
 ?>
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -37,6 +64,9 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== TRUE) {
                         <li class="nav-item">
                             <a class="nav-link" href="index.php?p=data_prodi">Program Studi</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="index.php?p=profil">Edit Profil</a>
+                        </li>
                     </ul>
 
                     <ul class="navbar-nav ms-auto">
@@ -62,7 +92,7 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== TRUE) {
                 if($page == 'data_prodi') include 'program_studi/listprodi.php';
                 if($page == 'create_prodi') include 'program_studi/createprodi.php';
                 if($page == 'edit_prodi') include 'program_studi/editprodi.php';
-
+                if($page == 'profil') include 'profil.php';
             ?>
         </div>
 
